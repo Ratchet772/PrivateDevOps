@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Install python
         run: sudo apt update && sudo apt install -y python3
-        run: echo "python has been installed"
+      - run: echo "python has been installed"
 
       - name: PlayScript
         run: python Hello.py
