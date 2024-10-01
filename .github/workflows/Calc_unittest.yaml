@@ -13,4 +13,4 @@ jobs:
       - run: echo "python has been installed"
 
       - name: Unittesting Calc
-        run: python /4.GitOps-02/Calc_Unittest.py
+        run: python ~/4.GitOps-02/Calc_Unittest.py
