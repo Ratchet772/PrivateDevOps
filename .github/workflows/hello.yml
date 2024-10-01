@@ -6,7 +6,7 @@ on:
 jobs:
   prepare:
     runs-on: ubuntu-latest
-      steps:
+    steps:
       - name: Install python
         run: sudo apt update && sudo apt install -y python3
         run: echo "python has been installed"
