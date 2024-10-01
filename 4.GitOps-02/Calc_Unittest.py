@@ -5,7 +5,7 @@ class UnitTest(unittest.TestCase):
   def setUp(self):
     self.calc = Calc()
   def test_divide(self):
-    self.assertEqual(self.calc.divide(100,4), 25)
+    self.assertEqual(self.calc.divide(100,4), 5)
   def test_multiply(self):
     self.assertEqual(self.calc.multiply(100,4), 400)
   def test_sum(self):
