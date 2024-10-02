@@ -44,7 +44,7 @@ adminn@ubuntuansible:~/ansible$
 ```bash
 adminn@ubuntuansible:~/ansible$ ansible-playbook hello_ansible.yaml
 ```
-![img](img/hello_ansible.png)
+![img](img/hello_ansible.PNG)
 
 ### 5. Document the installation process and the steps you took to run the playbook.
 ```bash
@@ -57,7 +57,7 @@ Deployed ubuntu 22.04, name TargetHost
 ```
 ### 2. Ensure SSH access to the remote machine from your local machine.
 
-![img](img/ansible_ping.png)
+![img](img/Ansible_Ping.png)
 
 ### 3. Write an Ansible playbook to install a basic package (e.g., vim or htop) on the remote host.
 ```bash
@@ -98,7 +98,7 @@ all_workers:
 ```
 ### 5. Execute the playbook and verify that the package is installed on the remote host.
 
-![img](img/apache_installed.png)
+![img](img/apache_installed.PNG)
 
 ## Homework Assignment 3: Managing Users and Groups
 ### 1. Create a playbook to manage users and groups on a remote host.
@@ -132,7 +132,7 @@ Done above
 ```bash
 adminn@ubuntuansible:~/ansible$ ansible-playbook -i inventory.yaml user_management.yaml --ask-become-pass -e username=testuser -e group=testgroup -e password=qwe123
 ```
-![img](img/new_user.png)
+![img](img/new_user.PNG)
 
 ```bash
 adminn@ubuntutarget:/etc/ssh$ groups testuser
