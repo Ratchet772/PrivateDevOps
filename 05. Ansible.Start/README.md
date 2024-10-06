@@ -57,7 +57,7 @@ Deployed ubuntu 22.04, name TargetHost
 ```
 ### 2. Ensure SSH access to the remote machine from your local machine.
 
-![img](img/Ansible_Ping.png)
+![img](img/Ansible_Ping.PNG)
 
 ### 3. Write an Ansible playbook to install a basic package (e.g., vim or htop) on the remote host.
 ```bash
