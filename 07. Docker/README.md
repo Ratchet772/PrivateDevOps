@@ -75,8 +75,65 @@ Dockerfile  Website.py
 adminn@ubuntudocker:~/Docker$
 ```
 ## 2. Write a Dockerfile to build an image for a simple web application (e.g., Flask or Node.js).
+### Web-application:
+```bash
+adminn@ubuntudocker:~/Docker$ cat Website.py
+#!/bin/python
+from flask import Flask
+app = Flask(__name__)
 
+@app.route('/')
+
+def index():
+    return "This is a test website for docker image"
+
+
+app.run(host="0.0.0.0", port=80)
+adminn@ubuntudocker:~/Docker$
+```
 ## 3. Copy your application code into the image and set the necessary environment.
+### Dockerfile
+```bash
+adminn@ubuntudocker:~/Docker$ cat Dockerfile
+FROM python
+RUN mkdir -p ./testwebsite
+WORKDIR ./testwebsite
+COPY . /testwebsite
+RUN pip3 install flask
+CMD ["python3","Website.py"]
+adminn@ubuntudocker:~/Docker$
+```
 ## 4. Build the Docker image using the docker build command.
+```bash
+adminn@ubuntudocker:~/Docker$ docker build -t websiteapp .
+[+] Building 0.6s (10/10) FINISHED                                                                                                                                                                                                                                                                            docker:default
+ => [internal] load build definition from Dockerfile                                                                                                                                                                                                                                                                    0.0s
+ => => transferring dockerfile: 172B                                                                                                                                                                                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:latest                                                                                                                                                                                                                                                        0.5s
+ => [internal] load .dockerignore                                                                                                                                                                                                                                                                                       0.0s
+ => => transferring context: 2B                                                                                                                                                                                                                                                                                         0.0s
+ => [1/5] FROM docker.io/library/python:latest@sha256:45803c375b95ea33f482e53a461eca8f247617667d703660a06ccf5eb3d05326                                                                                                                                                                                                  0.0s
+ => [internal] load build context                                                                                                                                                                                                                                                                                       0.0s
+ => => transferring context: 202B                                                                                                                                                                                                                                                                                       0.0s
+ => CACHED [2/5] RUN mkdir -p ./testwebsite                                                                                                                                                                                                                                                                             0.0s
+ => CACHED [3/5] WORKDIR ./testwebsite                                                                                                                                                                                                                                                                                  0.0s
+ => CACHED [4/5] COPY . /testwebsite                                                                                                                                                                                                                                                                                    0.0s
+ => CACHED [5/5] RUN pip3 install flask                                                                                                                                                                                                                                                                                 0.0s
+ => exporting to image                                                                                                                                                                                                                                                                                                  0.0s
+ => => exporting layers                                                                                                                                                                                                                                                                                                 0.0s
+ => => writing image sha256:2ec7c0c1eaf8bcfc935495a4b094056abdbc093a74045516fc1def148761f52f                                                                                                                                                                                                                            0.0s
+ => => naming to docker.io/library/websiteapp                                                                                                                                                                                                                                                                           0.0s
+
+ 1 warning found (use docker --debug to expand):
+ - WorkdirRelativePath: Relative workdir "./testwebsite" can have unexpected results if the base image changes (line 3)
+```
 ## 5. Run a container based on the image and access the web application.
+```bash
+adminn@ubuntudocker:~/Docker$ docker run --name websiteapp1 -p 80:80 -d websiteapp
+0a491a780a4bcca89b62b5e8fe3e2593428d4e22b3734f746c83b3728996413f
+adminn@ubuntudocker:~/Docker$ docker ps
+CONTAINER ID   IMAGE        COMMAND                CREATED         STATUS         PORTS                               NAMES
+0a491a780a4b   websiteapp   "python3 Website.py"   4 seconds ago   Up 4 seconds   0.0.0.0:80->80/tcp, :::80->80/tcp   websiteapp1
+```
 ## 6. Document the steps taken to create the Dockerfile, build the image, and access the app.
+![img](img/webapp.PNG)
