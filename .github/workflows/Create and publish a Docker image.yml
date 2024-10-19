@@ -52,4 +52,4 @@ jobs:
         SLACK_MESSAGE: "Docker image push process is ended ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}"
         SLACK_TITLE: Docker image build status
         SLACK_USERNAME: GitHub
-        SLACK_WEBHOOK: "https://hooks.slack.com/services/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"
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
