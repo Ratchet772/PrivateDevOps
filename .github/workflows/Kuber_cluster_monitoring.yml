@@ -24,6 +24,5 @@ jobs:
           username: ${{ secrets.K9S_SERVER_USER }}
           password: ${{ secrets.K9S_SERVER_PASS }}
           script: |
-            cd ~
-            /bin/bash -c "kubectl get pods -A > output.log"
+            bash ~/check_pods.sh
         
