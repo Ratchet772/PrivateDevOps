@@ -24,7 +24,7 @@ jobs:
           username: ${{ secrets.K9S_SERVER_USER }}
           password: ${{ secrets.K9S_SERVER_PASS }}
           script: |
-            kubectl get pods -A > home/for_outputs/output.log
+            kubectl get pods -A > /home/for_outputs/output.log
             crash_pods=$(kubectl get pods -A | awk 'NR!=1 {print $4}' | grep -v 'Running' | wc -l)
             echo "crash-pods=${crash_pods}" >> $GITHUB_ENV
             echo "crash_pods=${crash_pods}"
