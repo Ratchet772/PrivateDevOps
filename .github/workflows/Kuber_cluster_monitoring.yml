@@ -24,5 +24,6 @@ jobs:
           username: ${{ secrets.K9S_SERVER_USER }}
           password: ${{ secrets.K9S_SERVER_PASS }}
           script: |
-            bash ~/check_pods.sh
+            kubectl --kubeconfig ~/.kube/config-k8s get pods -A > k8s_status.log
+            kubectl --kubeconfig ~/.kube/config-k3s get pods -A > k3s_status.log
         
