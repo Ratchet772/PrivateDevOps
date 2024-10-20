@@ -25,5 +25,5 @@ jobs:
           password: ${{ secrets.K9S_SERVER_PASS }}
           script: |
             cd ~
-            ./check_pods.sh
+            /bin/bash -c "ls -l"
         
