@@ -23,5 +23,7 @@ jobs:
           host: ${{ secrets.K9S_SERVER_IP }}
           username: ${{ secrets.K9S_SERVER_USER }}
           password: ${{ secrets.K9S_SERVER_PASS }}
-          script: "kubectl get pods -A"
+          script: |
+            source ~/.bashrc
+            kubectl get pods -A > check_result.txt
         
