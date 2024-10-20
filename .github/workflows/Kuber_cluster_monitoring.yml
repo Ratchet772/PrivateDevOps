@@ -1,0 +1,27 @@
+name: Kuber_cluster_monitoring
+
+on:
+  schedule:
+    - cron: '*/60 * * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Check for failed pods
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          proxy_host: ${{ secrets.JUMPHOST_IP }}
+          proxy_port: ${{ secrets.JUMPHOST_PORT }}
+          proxy_username: ${{ secrets.JUMPHOST_USER }}
+          proxy_password: ${{ secrets.JUMPHOST_PASS }}
+          host: ${{ secrets.K9S_SERVER_IP }}
+          username: ${{ secrets.K9S_SERVER_USER }}
+          password: ${{ secrets.K9S_SERVER_PASS }}
+          run: |
+            kubectl get pods -A > /home/for_outputs/output.log
