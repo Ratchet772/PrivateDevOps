@@ -23,4 +23,4 @@ jobs:
           host: ${{ secrets.K9S_SERVER_IP }}
           username: ${{ secrets.K9S_SERVER_USER }}
           password: ${{ secrets.K9S_SERVER_PASS }}
-          script: "kubectl get pods -A > /home/for_outputs/output.log"
+          script: kubectl get pods -A > /home/for_outputs/output.log
