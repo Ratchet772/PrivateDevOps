@@ -12,6 +12,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: rtCamp/action-slack-notify@v2
       - name: Check for failed pods
         uses: appleboy/ssh-action@v1.1.0
         with:
@@ -34,10 +35,7 @@ jobs:
             else
               echo "failed=false" >> $GITHUB_ENV
             fi
-
-      - name: Slack Notification on Failure
-        if: env.failed == 'true'
-        uses: rtCamp/action-slack-notify@v2
+        if: env.failed == 'true'   
         env:
           SLACK_COLOR: failure
           SLACK_MESSAGE: "You have some failed pods in your cluster"
