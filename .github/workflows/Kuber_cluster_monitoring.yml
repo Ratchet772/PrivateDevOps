@@ -39,7 +39,7 @@ jobs:
         if: env.failed == 'true'
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_COLOR: ${{ failure }}
+          SLACK_COLOR: failure
           SLACK_MESSAGE: "You have some failed pods in your cluster"
           SLACK_TITLE: Kuber Failed Pods
           SLACK_USERNAME: KuberCluster
