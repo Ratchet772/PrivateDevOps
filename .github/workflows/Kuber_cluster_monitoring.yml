@@ -30,10 +30,9 @@ jobs:
             grep -E "Error" ~/k3s_status.log ~/k8s_status.log > Monitoring.txt
             grep -q "Error" ~/Monitoring.txt
             if [ $Error - eq 0 ]; then
-              echo "failed=true" >> $GITHUB_ENV
-              cat ~/Monitoring.txt
+               echo "failed=true" >> $GITHUB_ENV
             else
-              echo "failed=false" >> $GITHUB_ENV
+               echo "failed=false" >> $GITHUB_ENV
             fi
       - name: Slack Notification on Failure
         if: env.failed == false
