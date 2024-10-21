@@ -34,13 +34,4 @@ jobs:
               cat Monitoring.txt
             else
               echo "failed=false" >> $GITHUB_ENV
-            fi	
-      - name: Send message to Slack on Failure
-        if: env.failed == 'true'
-        run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"Failures found in your Kuber Cluster:\n'"$(cat Monitoring.txt)"'"}' ${{ secrets.HOOK }}
-
-      - name: Send message to Slack on Failure	
-        if: env.failed == 'false'	   
-	run: |
-        curl -X POST -H 'Content-type: application/json' --data '{"text":"No Failures detected in your Kuber Cluster"}' ${{ secrets.HOOK }}
+            fi
