@@ -35,7 +35,7 @@ jobs:
               echo "failed=false" >> $GITHUB_ENV
             fi
       - name: Slack Notification on Failure
-        if: ${{env.failed}} == 'false'
+        if: env.failed = false
         uses: rtCamp/action-slack-notify@v2   
         env:
           SLACK_COLOR: failure
