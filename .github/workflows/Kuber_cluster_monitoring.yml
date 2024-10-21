@@ -28,7 +28,8 @@ jobs:
             kubectl config use-context k3s --kubeconfig ~/.kube/config-k3s
             kubectl --kubeconfig ~/.kube/config-k3s get pods -A > k3s_status.log
             grep -E "Error" ~/k3s_status.log ~/k8s_status.log > Monitoring.txt
-            if grep -q Error ~/Monitoring.txt; then
+            grep -q "Error" ~/Monitoring.txt
+            if [ $Error - eq 0 ]; then
               echo "failed=true" >> $GITHUB_ENV
               cat ~/Monitoring.txt
             else
