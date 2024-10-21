@@ -29,8 +29,8 @@ jobs:
             kubectl --kubeconfig ~/.kube/config-k3s get pods -A > k3s_status.log
             grep -E "Running" ~/k3s_status.log ~/k8s_status.log > Monitoring.txt
             if grep -q Running ~/Monitoring.txt; then
-              echo "failed=true" >> $env:$GITHUB_ENV
+              echo "failed=true" >> $env:GITHUB_ENV
               cat ~/Monitoring.txt
             else
-              echo "failed=false" >> $env:$GITHUB_ENV
+              echo "failed=false" >> $env:GITHUB_ENV
             fi
