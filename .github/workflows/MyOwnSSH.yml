@@ -32,6 +32,7 @@ jobs:
 
       - name: Test Connection
         run: |
-          ssh k9s '$PROXY_PASSWORD'
-          '$PASSWORD'
+          ssh k9s 
+          $PROXY_PASSWORD
+          $PASSWORD
           'hostnamectl'
