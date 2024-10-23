@@ -30,16 +30,20 @@ jobs:
             grep -E "Error" ~/k3s_status.log ~/k8s_status.log > Monitoring.txt
             if grep -q Error ~/Monitoring.txt; then
               echo "failed=true" >> $GITHUB_ENV
-              cat ~/Monitoring.txt
             else
               echo "failed=false" >> $GITHUB_ENV
             fi
-      - name: Slack Notification on Failure
-        if: ${{env.failed}} == false
-        uses: rtCamp/action-slack-notify@v2   
-        env:
-          SLACK_COLOR: failure
-          SLACK_MESSAGE: "You have some failed pods in your cluster"
-          SLACK_TITLE: Kuber Failed Pods
-          SLACK_USERNAME: KuberCluster
-          SLACK_WEBHOOK: ${{ secrets.HOOK }}
+            
+  notification:
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{env.failed}} == false
+    steps:
+    - name: Slack Notification on Failure
+      uses: rtCamp/action-slack-notify@v2   
+      env:
+        SLACK_COLOR: failure
+        SLACK_MESSAGE: "You have some failed pods in your cluster"
+        SLACK_TITLE: Kuber Failed Pods
+        SLACK_USERNAME: KuberCluster
+        SLACK_WEBHOOK: ${{ secrets.HOOK }}
