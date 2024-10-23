@@ -21,15 +21,11 @@ jobs:
           host: ${{ secrets.K9S_SERVER_IP }}
           username: ${{ secrets.K9S_SERVER_USER }}
           password: ${{ secrets.K9S_SERVER_PASS }}
+          timeout: 300
           
     - name: check_hostname
     
-      run: |
-       ssh ${{ secrets.JUMPHOST_USER }}@${{ secrets.JUMPHOST_IP }}@
-       ${{ secrets.JUMPHOST_PASS }}
-       ssh ${{ secrets.K9S_SERVER_USER }}@${{ secrets.K9S_SERVER_IP }}
-       ${{ secrets.K9S_SERVER_PASS }}
-       hostnamectl
+      run: hostnamectl
 #      |
 #            kubectl config use-context k8s --kubeconfig ~/.kube/config-k8s
 #            kubectl --kubeconfig ~/.kube/config-k8s get pods -A > k8s_status.log
