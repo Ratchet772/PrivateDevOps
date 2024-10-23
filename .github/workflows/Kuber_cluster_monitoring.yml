@@ -30,6 +30,7 @@ jobs:
             grep -E "Error" ~/k3s_status.log ~/k8s_status.log > Monitoring.txt
             if grep -q Error ~/Monitoring.txt; then
               echo "failed=true" >> $GITHUB_ENV
+              cat ~/Monitoring.txt
             else
               echo "failed=false" >> $GITHUB_ENV
             fi
