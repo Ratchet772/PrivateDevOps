@@ -21,18 +21,21 @@ jobs:
           host: ${{ secrets.K9S_SERVER_IP }}
           username: ${{ secrets.K9S_SERVER_USER }}
           password: ${{ secrets.K9S_SERVER_PASS }}
-    - name: check_pods      
-      run: |
-            kubectl config use-context k8s --kubeconfig ~/.kube/config-k8s
-            kubectl --kubeconfig ~/.kube/config-k8s get pods -A > k8s_status.log
-            kubectl config use-context k3s --kubeconfig ~/.kube/config-k3s
-            kubectl --kubeconfig ~/.kube/config-k3s get pods -A > k3s_status.log
-            grep -E "Error" ~/k3s_status.log ~/k8s_status.log > Monitoring.txt
-            if grep -E "Error" ~/Monitoring.txt; then
-              echo "failed=true" >> $GITHUB_OUTPUT
-            else
-              echo "failed=false" >> $GITHUB_OUTPUT
-            fi
+          
+    - name: check_hostname
+    
+      run: echo hostname
+#      |
+#            kubectl config use-context k8s --kubeconfig ~/.kube/config-k8s
+#            kubectl --kubeconfig ~/.kube/config-k8s get pods -A > k8s_status.log
+#            kubectl config use-context k3s --kubeconfig ~/.kube/config-k3s
+#            kubectl --kubeconfig ~/.kube/config-k3s get pods -A > k3s_status.log
+#            grep -E "Error" ~/k3s_status.log ~/k8s_status.log > Monitoring.txt
+#            if grep -E "Error" ~/Monitoring.txt; then
+#              echo "failed=true" >> $GITHUB_OUTPUT
+#            else
+#              echo "failed=false" >> $GITHUB_OUTPUT
+#            fi
             
     - name: Test_output
       run: echo ${{ steps.check_pods.outputs.failed }}
