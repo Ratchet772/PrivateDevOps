@@ -17,7 +17,6 @@ jobs:
                   HostName $PROXY_HOST
           Host k9s
                   User $USERNAME
-                  Password $PASSWORD
                   HostName $HOST
                   ProxyJump bastion
           END
@@ -32,4 +31,7 @@ jobs:
           PASSWORD: ${{ secrets.K9S_SERVER_PASS }}
 
       - name: Test Connection
-        run: ssh k9s 'hostnamectl'
+        run: |
+          ssh k9s '$PROXY_PASSWORD'
+          '$PASSWORD'
+          'hostnamectl'
