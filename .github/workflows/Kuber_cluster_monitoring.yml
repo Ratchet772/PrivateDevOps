@@ -21,7 +21,7 @@ jobs:
           host: ${{ secrets.K9S_SERVER_IP }}
           username: ${{ secrets.K9S_SERVER_USER }}
           password: ${{ secrets.K9S_SERVER_PASS }}
-          timeout: 300
+          timeout: 300s
           
     - name: check_hostname
     
