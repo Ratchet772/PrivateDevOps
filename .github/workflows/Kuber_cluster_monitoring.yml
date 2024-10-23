@@ -31,9 +31,9 @@ jobs:
             grep -E "Error" ~/k3s_status.log ~/k8s_status.log > Monitoring.txt
             function set_output() { 
                 if grep -q "Error" ~/Monitoring.txt; then
-                echo "check_failed=true" >> $GITHUB_OUTPUT
+                echo "check_failed=true" >> "$GITHUB_OUTPUT"
                 else
-                echo "check_failed=false" >> $GITHUB_OUTPUT
+                echo "check_failed=false" >> "$GITHUB_OUTPUT"
                 fi
             }
             
