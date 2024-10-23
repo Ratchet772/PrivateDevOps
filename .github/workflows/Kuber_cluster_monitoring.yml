@@ -33,6 +33,12 @@ jobs:
             else
               echo "failed=false" >> $GITHUB_OUTPUT
             fi
+          run: |
+            if grep -E "Error" ~/Monitoring.txt; then
+              echo "failed=true" >> $GITHUB_OUTPUT
+            else
+              echo "failed=false" >> $GITHUB_OUTPUT
+            fi
       - name: Test_output
         run: echo ${{ steps.check_pods.outputs.failed }}
         
