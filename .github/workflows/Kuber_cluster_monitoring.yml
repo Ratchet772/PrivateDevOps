@@ -24,7 +24,7 @@ jobs:
           
     - name: check_hostname
     
-      run: echo hostname
+      run: hostnamectl
 #      |
 #            kubectl config use-context k8s --kubeconfig ~/.kube/config-k8s
 #            kubectl --kubeconfig ~/.kube/config-k8s get pods -A > k8s_status.log
