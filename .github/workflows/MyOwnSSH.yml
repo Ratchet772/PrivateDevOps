@@ -12,14 +12,14 @@ jobs:
           mkdir -p ~/.ssh/
           cat >>~/.ssh/config <<END
           Host bastion
-            User $PROXY_USERNAME
-            Port $PROXY_PORT
-            HostName $PROXY_HOST
+                  User $PROXY_USERNAME
+                  Port $PROXY_PORT
+                  HostName $PROXY_HOST
           Host k9s
-            User $USERNAME
-            Port $PASSWORD
-            HostName $HOST
-            ProxyJump bastion
+                  User $USERNAME
+                  Port $PASSWORD
+                  HostName $HOST
+                  ProxyJump bastion
           END  
         env:
           PROXY_HOST: ${{ secrets.JUMPHOST_IP }}
