@@ -20,7 +20,7 @@ jobs:
             Port $PASSWORD
             HostName $HOST
             ProxyJump bastion
-          END    
+          END  
         env:
           PROXY_HOST: ${{ secrets.JUMPHOST_IP }}
           PROXY_PORT: ${{ secrets.JUMPHOST_PORT }}
