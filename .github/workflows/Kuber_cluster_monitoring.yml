@@ -29,9 +29,9 @@ jobs:
             kubectl --kubeconfig ~/.kube/config-k3s get pods -A > k3s_status.log
             grep -E "Error" ~/k3s_status.log ~/k8s_status.log > Monitoring.txt
             if grep -E "Error" ~/Monitoring.txt; then
-              echo "failed=true" >> $env:GITHUB_OUTPUT
+              echo "failed=true" >> $GITHUB_OUTPUT
             else
-              echo "failed=false" >> $env:GITHUB_OUTPUT
+              echo "failed=false" >> $GITHUB_OUTPUT
             fi
       - name: Test_output
         run: echo ${{ steps.check_pods.outputs.failed }}
