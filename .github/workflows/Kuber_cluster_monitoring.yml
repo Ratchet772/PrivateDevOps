@@ -9,7 +9,8 @@ jobs:
   build:
     name: build
     runs-on: ubuntu-latest
-    outputs: ${{ steps.init.outputs.failed }}
+    outputs: 
+       failed: ${{ steps.init.outputs.failed }}
     steps:
       - uses: actions/checkout@v2
       - name: Check for failed pods
