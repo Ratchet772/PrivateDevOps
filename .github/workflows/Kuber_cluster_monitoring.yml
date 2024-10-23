@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - id: check_pods
+
       - uses: actions/checkout@v3
-      - name: Check for failed pods
+      - id: check_pods
         uses: appleboy/ssh-action@v1.1.0
         with:
           proxy_host: ${{ secrets.JUMPHOST_IP }}
