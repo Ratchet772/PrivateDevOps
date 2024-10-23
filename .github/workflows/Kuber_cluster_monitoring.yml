@@ -11,10 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - id: check_pods
-        uses: appleboy/ssh-action@v1.0.3
-        with:
+    - id: check_pods
+      uses: appleboy/ssh-action@v1.0.3
+      with:
           proxy_host: ${{ secrets.JUMPHOST_IP }}
           proxy_port: ${{ secrets.JUMPHOST_PORT }}
           proxy_username: ${{ secrets.JUMPHOST_USER }}
@@ -22,7 +21,8 @@ jobs:
           host: ${{ secrets.K9S_SERVER_IP }}
           username: ${{ secrets.K9S_SERVER_USER }}
           password: ${{ secrets.K9S_SERVER_PASS }}
-          script: |
+    - name: check_pods      
+      run: |
             kubectl config use-context k8s --kubeconfig ~/.kube/config-k8s
             kubectl --kubeconfig ~/.kube/config-k8s get pods -A > k8s_status.log
             kubectl config use-context k3s --kubeconfig ~/.kube/config-k3s
@@ -33,21 +33,16 @@ jobs:
             else
               echo "failed=false" >> $GITHUB_OUTPUT
             fi
-          run: |
-            if grep -E "Error" ~/Monitoring.txt; then
-              echo "failed=true" >> $GITHUB_OUTPUT
-            else
-              echo "failed=false" >> $GITHUB_OUTPUT
-            fi
-      - name: Test_output
-        run: echo ${{ steps.check_pods.outputs.failed }}
+            
+    - name: Test_output
+      run: echo ${{ steps.check_pods.outputs.failed }}
         
-      - name: Slack Notification on Failure
-        if: ${{ steps.check_pods.outputs.failed == 'true' }}
-        uses: rtCamp/action-slack-notify@v2   
-        env:
-          SLACK_COLOR: failure
-          SLACK_MESSAGE: "You have some failed pods in your cluster"
-          SLACK_TITLE: Kuber Failed Pods
-          SLACK_USERNAME: KuberCluster
-          SLACK_WEBHOOK: ${{ secrets.HOOK }}
+    - name: Slack Notification on Failure
+      if: ${{ steps.check_pods.outputs.failed == 'true' }}
+      uses: rtCamp/action-slack-notify@v2   
+      env:
+        SLACK_COLOR: failure
+        SLACK_MESSAGE: "You have some failed pods in your cluster"
+        SLACK_TITLE: Kuber Failed Pods
+        SLACK_USERNAME: KuberCluster
+        SLACK_WEBHOOK: ${{ secrets.HOOK }}
