@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: check_pods
-        uses: appleboy/ssh-action@v1.1.0
+        uses: appleboy/ssh-action@v1.0.3
         with:
           proxy_host: ${{ secrets.JUMPHOST_IP }}
           proxy_port: ${{ secrets.JUMPHOST_PORT }}
