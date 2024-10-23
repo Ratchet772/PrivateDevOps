@@ -12,7 +12,7 @@ jobs:
     outputs: 
        check_failed: ${{ steps.init.outputs.check_failed }}
     steps:
-     # - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
       - name: Check for failed pods
         uses: appleboy/ssh-action@v1.1.0
         with:
