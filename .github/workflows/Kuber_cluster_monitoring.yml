@@ -40,7 +40,7 @@ jobs:
   notification:
     needs: build
     runs-on: ubuntu-latest
-    if: ${{env.check_failed}} == true
+    if: ${{needs.build.outputs.check_failed}} == true
 #    if: needs.build.outputs.check_failed == 'true'
     steps:
     - name: Slack Notification on Failure
