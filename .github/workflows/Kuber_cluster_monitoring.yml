@@ -38,7 +38,7 @@ jobs:
   notification:
     needs: build
     runs-on: ubuntu-latest
-    if: build.outputs.failed == false
+    if: needs.build.outputs.failed == false
     steps:
     - name: Slack Notification on Failure
       uses: rtCamp/action-slack-notify@v2  
