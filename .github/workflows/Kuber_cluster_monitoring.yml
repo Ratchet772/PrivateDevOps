@@ -22,7 +22,7 @@ jobs:
           host: ${{ secrets.K9S_SERVER_IP }}
           username: ${{ secrets.K9S_SERVER_USER }}
           password: ${{ secrets.K9S_SERVER_PASS }}
-          script: |
+          run: |
             kubectl config use-context k8s --kubeconfig ~/.kube/config-k8s
             kubectl --kubeconfig ~/.kube/config-k8s get pods -A > k8s_status.log
             kubectl config use-context k3s --kubeconfig ~/.kube/config-k3s
@@ -34,7 +34,7 @@ jobs:
               echo "failed=false" >> $env:GITHUB_OUTPUT
             fi
       - name: Slack Notification on Failure
-        if: ${{ steps.check_pods.outputs.true == 'true' }}
+        if: ${{ steps.check_pods.outputs.true == 'false' }}
         uses: rtCamp/action-slack-notify@v2   
         env:
           SLACK_COLOR: failure
