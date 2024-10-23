@@ -1,7 +1,11 @@
+name: MyOwnSSH
+
 on:
   workflow_dispatch:
-  jobs:
-    - name: all_in_one
+jobs:
+  build:
+    name: ssh and check pods
+    runs-on: ubuntu-latest
     steps:
       - name: Configure SSH
         run: |
@@ -17,14 +21,14 @@ on:
             HostName $HOST
             ProxyJump bastion
           END    
-      env:
-        PROXY_HOST: ${{ secrets.JUMPHOST_IP }}
-        PROXY_PORT: ${{ secrets.JUMPHOST_PORT }}
-        PROXY_USERNAME: ${{ secrets.JUMPHOST_USER }}
-        PROXY_PASSWORD: ${{ secrets.JUMPHOST_PASS }}
-        HOST: ${{ secrets.K9S_SERVER_IP }}
-        USERNAME: ${{ secrets.K9S_SERVER_USER }}
-        PASSWORD: ${{ secrets.K9S_SERVER_PASS }}
+        env:
+          PROXY_HOST: ${{ secrets.JUMPHOST_IP }}
+          PROXY_PORT: ${{ secrets.JUMPHOST_PORT }}
+          PROXY_USERNAME: ${{ secrets.JUMPHOST_USER }}
+          PROXY_PASSWORD: ${{ secrets.JUMPHOST_PASS }}
+          HOST: ${{ secrets.K9S_SERVER_IP }}
+          USERNAME: ${{ secrets.K9S_SERVER_USER }}
+          PASSWORD: ${{ secrets.K9S_SERVER_PASS }}
 
-    - name: Test Connection
-      run: ssh k9s 'hostnamectl'
+      - name: Test Connection
+        run: ssh k9s 'hostnamectl'
