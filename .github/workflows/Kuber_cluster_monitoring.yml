@@ -34,16 +34,17 @@ jobs:
               echo "failed=false" >> $GITHUB_OUTPUT
             fi
             
-  notification:
-    needs: build
-    runs-on: ubuntu-latest
-    if: steps.build.outputs.my_param == false
-    steps:
-    - name: Slack Notification on Failure
-      uses: rtCamp/action-slack-notify@v2   
-      env:
-        SLACK_COLOR: failure
-        SLACK_MESSAGE: "You have some failed pods in your cluster"
-        SLACK_TITLE: Kuber Failed Pods
-        SLACK_USERNAME: KuberCluster
-        SLACK_WEBHOOK: ${{ secrets.HOOK }}
+#  notification:
+#    needs: build
+#    runs-on: ubuntu-latest
+    
+#    steps:
+      - name: Slack Notification on Failure
+        if: steps.build.outputs.failed == false
+        uses: rtCamp/action-slack-notify@v2   
+        env:
+          SLACK_COLOR: failure
+          SLACK_MESSAGE: "You have some failed pods in your cluster"
+          SLACK_TITLE: Kuber Failed Pods
+          SLACK_USERNAME: KuberCluster
+          SLACK_WEBHOOK: ${{ secrets.HOOK }}
