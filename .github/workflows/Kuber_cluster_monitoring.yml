@@ -12,7 +12,7 @@ jobs:
     outputs: 
        check_failed: ${{ steps.init.outputs.check_failed }}
     steps:
-      - uses: actions/checkout@v2
+     # - uses: actions/checkout@v2
       - name: Check for failed pods
         uses: appleboy/ssh-action@v1.1.0
         with:
@@ -29,16 +29,16 @@ jobs:
             kubectl config use-context k3s --kubeconfig ~/.kube/config-k3s
             kubectl --kubeconfig ~/.kube/config-k3s get pods -A > k3s_status.log
             grep -E "Error" ~/k3s_status.log ~/k8s_status.log > Monitoring.txt
-            if grep -q Error ~/Monitoring.txt; then
-              echo "check_failed=true" >> "$GITHUB_OUTPUT"
+            if grep -q "Error" ~/Monitoring.txt; then
+              echo "check_failed=true" >> $GITHUB_OUTPUT
             else
-              echo "check_failed=false" >> "$GITHUB_OUTPUT"
+              echo "check_failed=false" >> $GITHUB_OUTPUT
             fi
             
   notification:
     needs: build
     runs-on: ubuntu-latest
-    if: needs.build.outputs.check_failed == true
+    if: needs.build.outputs.check_failed == 'true'
     steps:
     - name: Slack Notification on Failure
       uses: rtCamp/action-slack-notify@v2  
