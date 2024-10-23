@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
       - name: Check for failed pods
         uses: appleboy/ssh-action@v1.1.0
         with:
@@ -29,22 +29,16 @@ jobs:
             kubectl --kubeconfig ~/.kube/config-k3s get pods -A > k3s_status.log
             grep -E "Error" ~/k3s_status.log ~/k8s_status.log > Monitoring.txt
             if grep -q Error ~/Monitoring.txt; then
-              echo "failed=true" >> $GITHUB_OUTPUT
+              echo "failed=true" >> $GITHUB_ENV
             else
-              echo "failed=false" >> $GITHUB_OUTPUT
+              echo "failed=false" >> $GITHUB_ENV
             fi
-            
-#  notification:
-#    needs: build
-#    runs-on: ubuntu-latest
-    
-#    steps:
-#      - name: Slack Notification on Failure
-#        if: steps.build.outputs.failed == false
-#        uses: rtCamp/action-slack-notify@v2   
-#        env:
-#          SLACK_COLOR: failure
-#          SLACK_MESSAGE: "You have some failed pods in your cluster"
-#          SLACK_TITLE: Kuber Failed Pods
-#          SLACK_USERNAME: KuberCluster
-#          SLACK_WEBHOOK: ${{ secrets.HOOK }}
+      - name: Slack Notification on Failure
+        if: ${{env.failed}} == true
+        uses: rtCamp/action-slack-notify@v2   
+        env:
+          SLACK_COLOR: failure
+          SLACK_MESSAGE: "You have some failed pods in your cluster"
+          SLACK_TITLE: Kuber Failed Pods
+          SLACK_USERNAME: KuberCluster
+          SLACK_WEBHOOK: ${{ secrets.HOOK }}
