@@ -29,15 +29,15 @@ jobs:
             kubectl --kubeconfig ~/.kube/config-k3s get pods -A > k3s_status.log
             grep -E "Error" ~/k3s_status.log ~/k8s_status.log > Monitoring.txt
             if grep -q Error ~/Monitoring.txt; then
-              echo "failed=true" >> $GITHUB_ENV
+              echo "failed=true" >> $GITHUB_OUTPUT
             else
-              echo "failed=false" >> $GITHUB_ENV
+              echo "failed=false" >> $GITHUB_OUTPUT
             fi
             
   notification:
     needs: build
     runs-on: ubuntu-latest
-    if: ${{env.failed}} == false
+    if: steps.build.outputs.my_param == false
     steps:
     - name: Slack Notification on Failure
       uses: rtCamp/action-slack-notify@v2   
