@@ -35,7 +35,7 @@ jobs:
               echo "failed=false" >> $GITHUB_OUTPUT
             fi
       - name: Slack Notification on Failure
-        if: steps.check_pods.outputs.failed == 'false'
+        if: ${{ steps.check_pods.outputs.failed == 'false' }}
         uses: rtCamp/action-slack-notify@v2   
         env:
           SLACK_COLOR: failure
