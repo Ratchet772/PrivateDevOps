@@ -33,8 +33,4 @@ jobs:
           PASSWORD: ${{ secrets.K9S_SERVER_PASS }}
 
       - name: Test Connection
-        run: |
-          ssh k9s 
-          $PROXY_PASSWORD
-          $PASSWORD
-          'hostnamectl'
+        run: ssh bastion
