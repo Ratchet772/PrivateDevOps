@@ -46,7 +46,7 @@ jobs:
           source: "/root/Monitoring.txt"
           target: "./Monitoring.txt"    
 
-      - name: Check_Results
+      - id: check_results
         run: |
           cat ./Monitoring.txt
           if grep -q Error ./Monitoring.txt; then
@@ -56,7 +56,7 @@ jobs:
           fi
           
       - name: Slack Notification on Failure
-        if: steps.build.outputs.failed == false
+        if: steps.check_results.outputs.failed == 'false'
         uses: rtCamp/action-slack-notify@v2   
         env:
           SLACK_COLOR: failure
