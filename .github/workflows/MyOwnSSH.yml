@@ -15,10 +15,12 @@ jobs:
                   User $PROXY_USERNAME
                   Port $PROXY_PORT
                   HostName $PROXY_HOST
+                  StrictHostKeyChecking no
           Host k9s
                   User $USERNAME
                   HostName $HOST
                   ProxyJump bastion
+                  StrictHostKeyChecking no
           END
           cat ~/.ssh/config
         env:
