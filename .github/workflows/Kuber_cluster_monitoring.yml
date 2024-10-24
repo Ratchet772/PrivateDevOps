@@ -45,7 +45,17 @@ jobs:
           insecure_proxy_ignore_fingerprint: true
           source: "/root/Monitoring.txt"
           target: "./Monitoring.txt"    
-          
+
+      - name: Check_Results
+        run: |
+          cat ~/Monitoring.txt
+          if grep -q Error ~/Monitoring.txt; then
+              echo "failed=true" >> $GITHUB_OUTPUT
+          else
+              echo "failed=false" >> $GITHUB_OUTPUT
+          fi
+
+      
 #      - name: Slack Notification on Failure
 #        if: ${{env.failed}} == true
 #        uses: rtCamp/action-slack-notify@v2   
