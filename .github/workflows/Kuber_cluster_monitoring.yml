@@ -56,7 +56,7 @@ jobs:
           fi
           
       - name: Slack Notification on Failure
-        if: steps.check_results.outputs.failed == 'false'
+        if: steps.check_results.outputs.failed == 'true'
         uses: rtCamp/action-slack-notify@v2   
         env:
           SLACK_COLOR: failure
