@@ -11,9 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - id: check_pods
-      uses: appleboy/ssh-action@v1.0.3
-      with:
+      - uses: actions/checkout@v2
+      - name: Check for failed pods
+        uses: appleboy/ssh-action@v1.1.0
+        with:
           proxy_host: ${{ secrets.JUMPHOST_IP }}
           proxy_port: ${{ secrets.JUMPHOST_PORT }}
           proxy_username: ${{ secrets.JUMPHOST_USER }}
@@ -21,32 +22,36 @@ jobs:
           host: ${{ secrets.K9S_SERVER_IP }}
           username: ${{ secrets.K9S_SERVER_USER }}
           password: ${{ secrets.K9S_SERVER_PASS }}
-          timeout: 300s
+          script: |
+            kubectl config use-context k8s --kubeconfig ~/.kube/config-k8s
+            kubectl --kubeconfig ~/.kube/config-k8s get pods -A > k8s_status.log
+            kubectl config use-context k3s --kubeconfig ~/.kube/config-k3s
+            kubectl --kubeconfig ~/.kube/config-k3s get pods -A > k3s_status.log
+            grep -E "Error" ~/k3s_status.log ~/k8s_status.log > Monitoring.txt
+
+      - name: Monitoring result download
+        uses: nicklasfrahm/scp-action@main
+        with:
+          direction: download
+          host: ${{ secrets.K9S_SERVER_IP }}
+          username: ${{ secrets.K9S_SERVER_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          insecure_ignore_fingerprint: true
+          proxy_host: ${{ secrets.JUMPHOST_IP }}
+          proxy_fingerprint: true
+          proxy_username: ${{ secrets.JUMPHOST_USER }}
+          proxy_key: ${{ secrets.SSH_KEY }}
+          proxy_port: ${{ secrets.JUMPHOST_PORT }}
+          insecure_proxy_ignore_fingerprint: true
+          source: "/root/Monitoring.txt"
+          target: "./Monitoring.txt"    
           
-    - name: check_hostname
-    
-      run: hostnamectl
-#      |
-#            kubectl config use-context k8s --kubeconfig ~/.kube/config-k8s
-#            kubectl --kubeconfig ~/.kube/config-k8s get pods -A > k8s_status.log
-#            kubectl config use-context k3s --kubeconfig ~/.kube/config-k3s
-#            kubectl --kubeconfig ~/.kube/config-k3s get pods -A > k3s_status.log
-#            grep -E "Error" ~/k3s_status.log ~/k8s_status.log > Monitoring.txt
-#            if grep -E "Error" ~/Monitoring.txt; then
-#              echo "failed=true" >> $GITHUB_OUTPUT
-#            else
-#              echo "failed=false" >> $GITHUB_OUTPUT
-#            fi
-            
-    - name: Test_output
-      run: echo ${{ steps.check_pods.outputs.failed }}
-        
-    - name: Slack Notification on Failure
-      if: ${{ steps.check_pods.outputs.failed == 'true' }}
-      uses: rtCamp/action-slack-notify@v2   
-      env:
-        SLACK_COLOR: failure
-        SLACK_MESSAGE: "You have some failed pods in your cluster"
-        SLACK_TITLE: Kuber Failed Pods
-        SLACK_USERNAME: KuberCluster
-        SLACK_WEBHOOK: ${{ secrets.HOOK }}
+#      - name: Slack Notification on Failure
+#        if: ${{env.failed}} == true
+#        uses: rtCamp/action-slack-notify@v2   
+#        env:
+#          SLACK_COLOR: failure
+#          SLACK_MESSAGE: "You have some failed pods in your cluster"
+#          SLACK_TITLE: Kuber Failed Pods
+#          SLACK_USERNAME: KuberCluster
+#          SLACK_WEBHOOK: ${{ secrets.HOOK }}
