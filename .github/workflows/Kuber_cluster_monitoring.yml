@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Create upload directory
-        run: mkdir /home/upload/
+        run: mkdir /tmp/upload/
       - uses: actions/checkout@v2
       - name: Check for failed pods
         uses: appleboy/ssh-action@v1.1.0
@@ -46,7 +46,7 @@ jobs:
           proxy_port: ${{ secrets.JUMPHOST_PORT }}
           insecure_proxy_ignore_fingerprint: true
           source: "/root/Monitoring.txt"
-          target: "/home/upload/Monitoring.txt"    
+          target: "/tmp/upload/Monitoring.txt"    
 
       - name: Check_Results
         run: |
