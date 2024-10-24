@@ -46,12 +46,12 @@ jobs:
           proxy_port: ${{ secrets.JUMPHOST_PORT }}
           insecure_proxy_ignore_fingerprint: true
           source: "/root/Monitoring.txt"
-          target: "/tmp/upload/Monitoring.txt"    
+          target: "tmp/upload/Monitoring.txt"    
 
       - name: Check_Results
         run: |
-          cat /tmp/upload/Monitoring.txt
-          if grep -q Error /tmp/upload/Monitoring.txt; then
+          cat tmp/upload/Monitoring.txt
+          if grep -q Error tmp/upload/Monitoring.txt; then
               echo "failed=true" >> $GITHUB_OUTPUT
           else
               echo "failed=false" >> $GITHUB_OUTPUT
