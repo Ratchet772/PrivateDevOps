@@ -28,14 +28,35 @@ jobs:
             kubectl config use-context k3s --kubeconfig ~/.kube/config-k3s
             kubectl --kubeconfig ~/.kube/config-k3s get pods -A > k3s_status.log
             grep -E "Error" ~/k3s_status.log ~/k8s_status.log > Monitoring.txt
-            if grep -q Error ~/Monitoring.txt; then
-              echo "failed=true" >> $GITHUB_ENV
-              cat ~/Monitoring.txt
-            else
-              echo "failed=false" >> $GITHUB_ENV
-            fi
+
+      - name: Monitoring result download
+        uses: nicklasfrahm/scp-action@main
+        with:
+          direction: download
+          host: ${{ secrets.K9S_SERVER_IP }}
+          username: ${{ secrets.K9S_SERVER_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          insecure_ignore_fingerprint: true
+          proxy_host: ${{ secrets.JUMPHOST_IP }}
+          proxy_fingerprint: true
+          proxy_username: ${{ secrets.JUMPHOST_USER }}
+          proxy_key: ${{ secrets.SSH_KEY }}
+          proxy_port: ${{ secrets.JUMPHOST_PORT }}
+          insecure_proxy_ignore_fingerprint: true
+          source: "/root/Monitoring.txt"
+          target: "./Monitoring.txt"    
+
+      - id: check_results
+        run: |
+          cat ./Monitoring.txt
+          if grep -q Error ./Monitoring.txt; then
+              echo "failed=true" >> $GITHUB_OUTPUT
+          else
+              echo "failed=false" >> $GITHUB_OUTPUT
+          fi
+          
       - name: Slack Notification on Failure
-        if: ${{env.failed}} == true
+        if: steps.check_results.outputs.failed == 'true'
         uses: rtCamp/action-slack-notify@v2   
         env:
           SLACK_COLOR: failure

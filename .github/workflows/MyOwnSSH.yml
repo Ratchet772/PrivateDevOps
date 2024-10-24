@@ -1,0 +1,36 @@
+name: MyOwnSSH
+
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    name: ssh and check pods
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          cat >>~/.ssh/config <<END
+          Host bastion
+                  User $PROXY_USERNAME
+                  Port $PROXY_PORT
+                  HostName $PROXY_HOST
+                  StrictHostKeyChecking no
+          Host k9s
+                  User $USERNAME
+                  HostName $HOST
+                  ProxyJump bastion
+                  StrictHostKeyChecking no
+          END
+          cat ~/.ssh/config
+        env:
+          PROXY_HOST: ${{ secrets.JUMPHOST_IP }}
+          PROXY_PORT: ${{ secrets.JUMPHOST_PORT }}
+          PROXY_USERNAME: ${{ secrets.JUMPHOST_USER }}
+          PROXY_PASSWORD: ${{ secrets.JUMPHOST_PASS }}
+          HOST: ${{ secrets.K9S_SERVER_IP }}
+          USERNAME: ${{ secrets.K9S_SERVER_USER }}
+          PASSWORD: ${{ secrets.K9S_SERVER_PASS }}
+
+      - name: Test Connection
+        run: ssh bastion
